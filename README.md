@@ -2,7 +2,9 @@
 
 一个基于网页的高效代码编辑器，专为远程协作开发设计，支持多种编程语言，并提供实时编译和部署功能。
 
-![编辑器界面](https://via.placeholder.com/800x450.png?text=鹅鹅协作编辑器)
+![编辑器界面](./docs/editor-light.png)
+
+![编辑器界面](./docs/editor-dark.png)
 
 ## 📚 项目概述
 
