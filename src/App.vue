@@ -451,12 +451,10 @@ watch(
 </template>
 
 <style scoped lang="scss">
-/* 样式基本保持原样，这里仅在 item > select 处复用 input/textarea 的样式 */
 .placeholder {
   flex: 1;
 }
 
-/* 让 select 与 input/textarea 的外观一致 */
 .mask .content .input-with-button {
   display: flex;
   gap: 8px;

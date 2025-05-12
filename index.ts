@@ -113,7 +113,6 @@ app.post<{ Params: { pj: string, ['*']: string }, Querystring: { secretKey: stri
         const targetPath = path.join(rootPath, targetFile);
         await rename(targetPath, `${targetPath}.${Date.now()}.bak`)
         await writeFile(targetPath, req.body)
-        console.log(`File ${targetPath} saved successfully`);
         
         return res.send({
             message: 'File uploaded successfully'
