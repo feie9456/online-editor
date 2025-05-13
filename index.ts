@@ -19,10 +19,10 @@ await app.register(fastifyStat, { root: join(__dirname, 'dist'), });
 const secretKey = process.env.SECRET_KEY
 const rootPath = process.env.ROOT_PATH
 if (!secretKey) {
-    throw new Error('SECRET_KEY is not set'); 
+    throw new Error('SECRET_KEY is not set');
 }
 if (!rootPath) {
-    throw new Error('ROOT_PATH is not set'); 
+    throw new Error('ROOT_PATH is not set');
 }
 
 // 创建 HMAC 函数
@@ -36,14 +36,20 @@ function createHmac(message: string, secretKey: string) {
 function verifyHmac(message: string, secretKey: string, hash: string) {
     const calculatedHash = createHmac(message, secretKey);
     console.log(`calculatedHash: ${calculatedHash}, hash: ${hash}`);
-    
+
     return calculatedHash === hash;
 }
 
 app.get<{ Params: { pj: string, ['*']: string }, Querystring: { secretKey: string } }>('/file/:pj/*', async (req, res) => {
     const { pj, '*': pth } = req.params;
     const targetFile = path.join(pj, pth);
-    
+
+    if (pj + "/" + pth != targetFile) {
+        return res.status(400).send({
+            message: `Use ${targetFile} instead of ${pj + pth}`
+        });
+    }
+
     if (!verifyHmac(targetFile, secretKey, req.query.secretKey)) {
         return res.status(401).send({
             message: 'Invalid secret key'
@@ -58,7 +64,7 @@ app.get<{ Params: { pj: string, ['*']: string }, Querystring: { secretKey: strin
         const { pj, '*': pth } = req.params;
         const targetFile = path.join(pj, pth);
         console.log(`targetFile: ${targetFile}`);
-        
+
         console.log(createHmac(targetFile, secretKey));
         if (!verifyHmac(targetFile, secretKey, req.query.secretKey)) {
             return res.status(401).send({
@@ -113,7 +119,7 @@ app.post<{ Params: { pj: string, ['*']: string }, Querystring: { secretKey: stri
         const targetPath = path.join(rootPath, targetFile);
         await rename(targetPath, `${targetPath}.${Date.now()}.bak`)
         await writeFile(targetPath, req.body)
-        
+
         return res.send({
             message: 'File uploaded successfully'
         });
