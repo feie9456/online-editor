@@ -35,8 +35,7 @@ function createHmac(message: string, secretKey: string) {
 // 验证 HMAC
 function verifyHmac(message: string, secretKey: string, hash: string) {
     const calculatedHash = createHmac(message, secretKey);
-    console.log(`calculatedHash: ${calculatedHash}, hash: ${hash}`);
-
+    
     return calculatedHash === hash;
 }
 
@@ -46,7 +45,7 @@ app.get<{ Params: { pj: string, ['*']: string }, Querystring: { secretKey: strin
 
     if (pj + "/" + pth != targetFile) {
         return res.status(400).send({
-            message: `Use ${targetFile} instead of ${pj + pth}`
+            message: `Use ${targetFile} as path instead`
         });
     }
 
